@@ -12,6 +12,7 @@ public class AnimationController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		float value = Input.GetAxis("Horizontal");
+		
 		Animator animator = GetComponent<Animator>();
 		
 		if(Mathf.Abs(value)>0){
@@ -19,5 +20,6 @@ public class AnimationController : MonoBehaviour {
 		} else {
 			animator.SetBool("run",false);		
 		}
+	
 	}
 }
