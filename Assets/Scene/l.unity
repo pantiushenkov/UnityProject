@@ -273,9 +273,8 @@ GameObject:
   m_Component:
   - component: {fileID: 394760015}
   - component: {fileID: 394760016}
-  - component: {fileID: 394760017}
   m_Layer: 0
-  m_Name: background
+  m_Name: farBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -334,18 +333,6 @@ SpriteRenderer:
   m_Size: {x: 1.5, y: 0.61}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
---- !u!114 &394760017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 394760014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a1da7e4864194d788dfd3bdd0552a76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slowdown: 0.5
 --- !u!1 &411359926
 GameObject:
   m_ObjectHideFlags: 0
@@ -754,8 +741,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1029578061}
   - component: {fileID: 1029578062}
+  - component: {fileID: 1029578063}
   m_Layer: 0
-  m_Name: background
+  m_Name: nearBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -814,6 +802,18 @@ SpriteRenderer:
   m_Size: {x: 4, y: 2.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+--- !u!114 &1029578063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1029578060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a1da7e4864194d788dfd3bdd0552a76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slowdown: 0.5
 --- !u!1 &1464480382
 GameObject:
   m_ObjectHideFlags: 0
