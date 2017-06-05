@@ -7,10 +7,10 @@ public class MovingPlatform : MonoBehaviour {
 	// Use this for initialization
 	public Vector3 MoveBy;
 	public float speed;
-	Vector3 pointA;
 	Vector3 pointB;
+	Vector3 pointA;
 	public bool going_to_a;
-	Vector3 target;
+	public Vector3 target;
 	float time_to_wait;
 	bool wait = false;
 	
@@ -23,11 +23,12 @@ public class MovingPlatform : MonoBehaviour {
 		this.pointB = this.pointA + MoveBy;		
 	}	
 	
-	bool isArrived(Vector3 pos, Vector3 target) {
+	public bool isArrived(Vector3 pos, Vector3 target) {
 		pos.z = 0;
 		target.z = 0;
 		return Vector3.Distance(pos, target) < 0.02f;
 	}
+
 	void Update(){
 		if(wait){
 			time_to_wait -= Time.deltaTime;
@@ -53,6 +54,25 @@ public class MovingPlatform : MonoBehaviour {
 		
 		my_pos += destination * speed;  
 		this.transform.position = my_pos;
+		}
+	}
+
+	public static void checkParentPlatform(Transform transform,Transform parent,RaycastHit2D hit){
+	
+		if(hit) {
+			if(hit.transform != null && hit.transform.GetComponent<MovingPlatform>() != null){
+				SetNewParent(transform, hit.transform);
+			}
+		} else {
+			SetNewParent(transform, parent);
+		}
+	}
+	
+	static void SetNewParent(Transform obj, Transform new_parent) {
+		if(obj.transform.parent != new_parent) {
+			Vector3 pos = obj.transform.position;
+			obj.transform.parent = new_parent;
+			obj.transform.position = pos;
 		}
 	}
 }

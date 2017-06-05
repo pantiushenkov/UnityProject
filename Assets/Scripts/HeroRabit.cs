@@ -5,27 +5,26 @@ using UnityEngine;
 public class HeroRabit : MonoBehaviour {
 
 	// Use this for initialization
-	public float speed = 1;bool isGrounded = false;
-	bool JumpActive = false;
+	public float speed = 1;
+	bool isGrounded = false,JumpActive=false,dieAnimation = false;
 	float JumpTime = 0f;
-	public float MaxJumpTime = 2f;
-	public float JumpSpeed = 2f;
+	public float MaxJumpTime = 2f,JumpSpeed=2f;
 	Transform heroParent = null;
 	RaycastHit2D hit;
 	Animator animator;
 	Vector3 to;
-	bool dieAnimation = false;
-	public static HeroRabit current;
-	static bool scaledTwice = false;
 	Vector3 from;
+	public static HeroRabit current;
+	bool scaledTwice = false;
 	int layer_id;
 
 	Rigidbody2D myBody = null;
-	// Use this for initialization
+
 	void Start () {
 		this.heroParent = this.transform.parent;
 		myBody = this.GetComponent<Rigidbody2D>();
 		LevelController.current.setStartPosition(transform.position);
+		animator = GetComponent<Animator> ();	
 	}
 
 	void run(){
@@ -49,7 +48,6 @@ public class HeroRabit : MonoBehaviour {
 		} else if(value > 0) {
 			sr.flipX = false;
 		}
-
 	}
 
 	void jump(){
@@ -66,7 +64,7 @@ public class HeroRabit : MonoBehaviour {
 			this.JumpActive = true;
 		}
 		if(this.JumpActive) {
-		//Якщо кнопку ще тримають
+		
 		if(Input.GetButton("Jump")) {
 			this.JumpTime += Time.deltaTime;
 				if (this.JumpTime < this.MaxJumpTime) {
@@ -84,12 +82,11 @@ public class HeroRabit : MonoBehaviour {
 		} else {
 			animator.SetBool("jump", true);
 		}
-		checkParentPlatform(from, to, layer_id);
+		MovingPlatform.checkParentPlatform(this.transform,this.heroParent,hit);
 	}
-	// Update is called once per frame
+
 	void FixedUpdate () {
-	 	animator = GetComponent<Animator> ();	
-		from = transform.position + Vector3.up * 0.3f;
+	 	from = transform.position + Vector3.up * 0.3f;
 		to = transform.position + Vector3.down * 0.1f;
 		layer_id = 1 << LayerMask.NameToLayer("Ground");
 		
@@ -114,12 +111,10 @@ public class HeroRabit : MonoBehaviour {
 		if(!scaledTwice){
 			dieAnimation = true;
 			if(this.isGrounded) {
-				Debug.Log("die is grounded");
 				animator.SetBool("die", true);
 				time_to_wait -= Time.deltaTime;
 				Debug.Log(time_to_wait);
 				if(time_to_wait <= 0) {
-					Debug.Log("die finished");
 					LevelController.current.onRabitDeath(GetComponent<HeroRabit>());
 					animator.SetBool("die", false);
 					dieAnimation = false;
@@ -133,31 +128,5 @@ public class HeroRabit : MonoBehaviour {
 	public void scale(int scale){
 			this.transform.localScale += new Vector3(scale,scale,scale);
 			scaledTwice = !scaledTwice;
-	}
-
-	void checkParentPlatform(Vector3 from,Vector3 to,int layer_id){
-	
-		if(hit) {
-		//Перевіряємо чи ми опинились на платформі
-			if(hit.transform != null && hit.transform.GetComponent<MovingPlatform>() != null){
-			//Приліпаємо до платформи
-				SetNewParent(this.transform, hit.transform);
-			}
-		} else {
-			//Ми в повітрі відліпаємо під платформи
-			SetNewParent(this.transform, this.heroParent);
-		}
-	}
-	static void SetNewParent(Transform obj, Transform new_parent) {
-		if(obj.transform.parent != new_parent) {
-			//Засікаємо позицію у Глобальних координатах
-			Vector3 pos = obj.transform.position;
-			//Встановлюємо нового батька
-			obj.transform.parent = new_parent;
-			//Після зміни батька координати кролика зміняться
-			//Оскільки вони тепер відносно іншого об’єкта
-			//повертаємо кролика в ті самі глобальні координати
-			obj.transform.position = pos;
-		}
-	}
+	}	
 }
