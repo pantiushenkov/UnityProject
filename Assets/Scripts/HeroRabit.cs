@@ -5,8 +5,9 @@ using UnityEngine;
 public class HeroRabit : MonoBehaviour {
 
 	// Use this for initialization
+	public static HeroRabit lastRabit = null;
 	public float speed = 1;
-	bool isGrounded = false,JumpActive=false,dieAnimation = false;
+	bool isGrounded = false,JumpActive=false,dieAnimation = false,isDying = false;
 	float JumpTime = 0f;
 	public float MaxJumpTime = 2f,JumpSpeed=2f;
 	Transform heroParent = null;
@@ -14,12 +15,20 @@ public class HeroRabit : MonoBehaviour {
 	Animator animator;
 	Vector3 to;
 	Vector3 from;
-	public static HeroRabit current;
+	static HeroRabit current;
 	bool scaledTwice = false;
 	int layer_id;
-
+	
 	Rigidbody2D myBody = null;
-
+	
+	public bool isScaled(){
+		return scaledTwice;
+	}
+	
+	void Awake() {
+		lastRabit = this;
+	}
+	
 	void Start () {
 		this.heroParent = this.transform.parent;
 		myBody = this.GetComponent<Rigidbody2D>();
@@ -82,8 +91,7 @@ public class HeroRabit : MonoBehaviour {
 		} else {
 			animator.SetBool("jump", true);
 		}
-		MovingPlatform.checkParentPlatform(this.transform,this.heroParent,hit);
-	}
+		}
 
 	void FixedUpdate () {
 	 	from = transform.position + Vector3.up * 0.3f;
@@ -101,25 +109,30 @@ public class HeroRabit : MonoBehaviour {
 		run();
 		jump();
 		
+		MovingPlatform.checkParentPlatform(this.transform,this.heroParent,hit);
+
 		if(dieAnimation){
-			die();
+			triggerDie();
 		}
 	}
-	float time_to_wait = 1;
 	
-	public void die(){
+	public void triggerDie(){
+		if(!isDying){
+			StartCoroutine(die());
+		}
+	}
+
+	IEnumerator die(){
 		if(!scaledTwice){
+			isDying = true;
 			dieAnimation = true;
-			if(this.isGrounded) {
-				animator.SetBool("die", true);
-				time_to_wait -= Time.deltaTime;
-				Debug.Log(time_to_wait);
-				if(time_to_wait <= 0) {
-					LevelController.current.onRabitDeath(GetComponent<HeroRabit>());
-					animator.SetBool("die", false);
-					dieAnimation = false;
-				}
-			}
+			animator.SetBool("die", true);
+			yield return new WaitForSeconds(1);
+			LevelController.current.onRabitDeath(GetComponent<HeroRabit>());
+			animator.SetBool("die", false);
+			dieAnimation = false;
+			isDying = false;
+			Debug.Log("dieAnimation");
 		} else {
 			this.scale(-1);
 		}
