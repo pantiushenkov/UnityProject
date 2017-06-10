@@ -113,6 +113,7 @@ public class OrcGreen : MonoBehaviour {
 			StartCoroutine(kill(2));
 		}
 		else if(distanceX < distanceToHit && distanceY > 1.3f && distanceY < 2){
+			HeroRabit.lastRabit.myBody.velocity += new Vector2 (0.5f , 0.5f);
 			animator.SetTrigger("die");
 			StartCoroutine(die(1));	
 		}

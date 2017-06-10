@@ -19,12 +19,12 @@ public class HeroRabit : MonoBehaviour {
 	bool scaledTwice = false;
 	int layer_id;
 	
-	Rigidbody2D myBody = null;
+	public Rigidbody2D myBody = null;
 	
 	public bool isScaled(){
 		return scaledTwice;
 	}
-	
+
 	void Awake() {
 		lastRabit = this;
 	}
@@ -106,8 +106,9 @@ public class HeroRabit : MonoBehaviour {
 			isGrounded = false;
 		}
 
-		run();
 		jump();
+		run();
+		
 		
 		MovingPlatform.checkParentPlatform(this.transform,this.heroParent,hit);
 

@@ -40,7 +40,7 @@ public class OrcBrown : MonoBehaviour {
 		myBody = this.GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator> ();	
 	}
-
+	
 	float getDirection() {
 		if(mode == Mode.Attack) {
 			if(my_pos.x < rabit_pos.x) {
@@ -62,7 +62,7 @@ public class OrcBrown : MonoBehaviour {
 	}
 
 	IEnumerator die(float duration) {
-		mode = Mode.Die;
+		mode = Mode.Die;		
 		yield return new WaitForSeconds (duration);
 		Destroy(this.gameObject);
 	}
@@ -115,6 +115,7 @@ public class OrcBrown : MonoBehaviour {
 		float distanceToHit = HeroRabit.lastRabit.isScaled() ? distanceToHitScaleX : distanceToHitX;
 
 		if(distanceX < distanceToHit && distanceY > 1.3f && distanceY < 2){
+			HeroRabit.lastRabit.myBody.velocity += new Vector2 (0.5f , 0.5f);
 			animator.SetTrigger("die");
 			StartCoroutine(die(1));	
 		}
