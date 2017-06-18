@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HeroRabit : MonoBehaviour {
 
 	// Use this for initialization
 	public static HeroRabit lastRabit = null;
 	public float speed = 1;
-	bool isGrounded = false,JumpActive=false,dieAnimation = false,isDying = false;
+	bool isGrounded = false,JumpActive=false,dieAnimation = false;
+	public static bool isDying = false;
 	float JumpTime = 0f;
 	public float MaxJumpTime = 2f,JumpSpeed=2f;
 	Transform heroParent = null;
@@ -94,6 +96,7 @@ public class HeroRabit : MonoBehaviour {
 		}
 
 	void FixedUpdate () {
+		if(SceneManager.GetActiveScene().name == "MainMenu") return;
 	 	from = transform.position + Vector3.up * 0.3f;
 		to = transform.position + Vector3.down * 0.1f;
 		layer_id = 1 << LayerMask.NameToLayer("Ground");
