@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelController : MonoBehaviour {
-
+	
+	public AudioClip music;
+	AudioSource musicSource;	
 	public static LevelController current;
 	Vector3 startingPosition;
-	
+	LevelStats stats;
+
 	public void setStartPosition(Vector3 pos){
 		this.startingPosition = pos;
 	}
@@ -19,8 +22,17 @@ public class LevelController : MonoBehaviour {
 	
 	void Awake () {
 		current = this;
+		string str = PlayerPrefs.GetString ("stats", null);
+		this.stats = JsonUtility.FromJson<LevelStats> (str);
+		if(this.stats != null) {
+			this.stats = new LevelStats ();
+		}
 	}
 
 	void Start(){
+		musicSource = gameObject.AddComponent<AudioSource>();
+		musicSource.clip = music;
+		musicSource.loop = true;
+		musicSource.Play ();
 	}
 }

@@ -11,27 +11,25 @@ public class OrcGreen : MonoBehaviour {
 		Idle,
 		Die
 	}
+	public AudioClip attackSound = null;
+    AudioSource attackSource = null;
 	
 	public float speed = 1;
 	float distanceToHitX = 1.3f;
 	float distanceToHitScaleX = 1.6f;
 	RaycastHit2D hit;
 	Animator animator;
-	public Vector3 MoveBy;
-	Vector3 to;
-	Vector3 from;
+	public Vector3 MoveBy,my_pos,pointB,pointA,target,rabit_pos;
+	Vector3 to,from;
 	Rigidbody2D myBody = null;
 	Mode mode;	
 	int layer_id;
-	Vector3 my_pos;
-	Vector3 pointB;
-	Vector3 pointA;
 	Transform heroParent = null;
-	Vector3 target;
 	float value;
-	Vector3 rabit_pos;
 	
 	void Start () {
+		attackSource = gameObject.AddComponent<AudioSource> ();
+		attackSource.clip = attackSound;
 		this.pointA = this.transform.position - MoveBy;
 		this.pointB = this.pointA + 3 * MoveBy;
 		mode = Mode.GoToA;
@@ -107,11 +105,16 @@ public class OrcGreen : MonoBehaviour {
 		float distanceX = Mathf.Abs(rabit_pos.x - my_pos.x);
 		float distanceY = Mathf.Abs(rabit_pos.y - my_pos.y);
 		float distanceToHit = HeroRabit.lastRabit.isScaled() ? distanceToHitScaleX : distanceToHitX;
+		Debug.Log(SoundManager.Instance.isSoundOn());
+		if(distanceX < distanceToHit + 0.5 && SoundManager.Instance.isSoundOn()) {
+			attackSource.Play();
+			animator.SetTrigger("attack1");
+		}
 
 		if(mode != Mode.Die && distanceX < distanceToHit && distanceY < 0.5){
-			animator.SetTrigger("attack1");
 			StartCoroutine(kill(2));
 		}
+		
 		else if(distanceX < distanceToHit && distanceY > 1.3f && distanceY < 2){
 			HeroRabit.lastRabit.myBody.velocity += new Vector2 (0.5f , 0.5f);
 			animator.SetTrigger("die");

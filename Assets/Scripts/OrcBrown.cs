@@ -12,6 +12,8 @@ public class OrcBrown : MonoBehaviour {
 		Die
 	}
 	
+	public AudioClip attackSound = null;
+    AudioSource attackSource = null;
 	public float speed = 1;
 	float distanceToHitX = 1.3f;
 	float distanceToHitScaleX = 1.6f;
@@ -33,6 +35,8 @@ public class OrcBrown : MonoBehaviour {
 	public GameObject prefabCarrot;
 	
 	void Start () {
+		attackSource = gameObject.AddComponent<AudioSource> ();
+		attackSource.clip = attackSound;
 		this.pointA = this.transform.position - MoveBy;
 		this.pointB = this.pointA + 3 * MoveBy;
 		mode = Mode.GoToB;
@@ -91,6 +95,10 @@ public class OrcBrown : MonoBehaviour {
 	
 	void launchCarrot(float direction){		
 		if(Time.time - last_carrot > 2.0f) {
+			if(SoundManager.Instance.isSoundOn()){
+				attackSource.Play();
+			}
+			animator.SetTrigger("attack1");
 			last_carrot = Time.time;
 			GameObject obj = GameObject.Instantiate(this.prefabCarrot);
 			obj.transform.position = this.transform.position;

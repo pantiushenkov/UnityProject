@@ -5,21 +5,22 @@ using UnityEngine.SceneManagement;
 
 public class HeroRabit : MonoBehaviour {
 
-	// Use this for initialization
+	public AudioClip jumpSound = null,walkSound = null, dieSound = null;
+    AudioSource jumpSource = null,walkSource = null, dieSource = null;
+	
 	public static HeroRabit lastRabit = null;
 	public float speed = 1;
 	bool isGrounded = false,JumpActive=false,dieAnimation = false;
-	public static bool isDying = false;
 	float JumpTime = 0f;
 	public float MaxJumpTime = 2f,JumpSpeed=2f;
 	Transform heroParent = null;
 	RaycastHit2D hit;
 	Animator animator;
-	Vector3 to;
-	Vector3 from;
+	Vector3 to,from;
 	static HeroRabit current;
-	bool scaledTwice = false;
+	bool scaledTwice = false,isFalling = false,isDying = false;
 	int layer_id;
+	SpriteRenderer sr = null;
 	
 	public Rigidbody2D myBody = null;
 	
@@ -32,6 +33,13 @@ public class HeroRabit : MonoBehaviour {
 	}
 	
 	void Start () {
+		walkSource = gameObject.AddComponent<AudioSource> ();
+		walkSource.clip = walkSound;
+		dieSource = gameObject.AddComponent<AudioSource> ();
+		dieSource.clip = dieSound;
+		jumpSource = gameObject.AddComponent<AudioSource> ();
+		jumpSource.clip = jumpSound;
+		
 		this.heroParent = this.transform.parent;
 		myBody = this.GetComponent<Rigidbody2D>();
 		LevelController.current.setStartPosition(transform.position);
@@ -49,11 +57,14 @@ public class HeroRabit : MonoBehaviour {
 
 		if(this.isGrounded && Mathf.Abs(value) > 0) {
 			animator.SetBool("run", true);
+			if(SoundManager.Instance.isSoundOn()) {
+				walkSource.Play();
+			}
 		} else {
 			animator.SetBool("run", false);
 		}
 
-		SpriteRenderer sr = GetComponent<SpriteRenderer>();
+		sr = GetComponent<SpriteRenderer>();
 		if(value < 0) {
 			sr.flipX = true;
 		} else if(value > 0) {
@@ -91,6 +102,9 @@ public class HeroRabit : MonoBehaviour {
 		if(this.isGrounded) {
 			animator.SetBool("jump", false);
 		} else {
+			if(SoundManager.Instance.isSoundOn()) {
+				jumpSource.Play();
+			}
 			animator.SetBool("jump", true);
 		}
 		}
@@ -125,18 +139,32 @@ public class HeroRabit : MonoBehaviour {
 			StartCoroutine(die());
 		}
 	}
-
+	
+	public void fall(){
+		isFalling = true;
+		triggerDie();
+	}
+	
 	IEnumerator die(){
-		if(!scaledTwice){
+		if(isFalling || !scaledTwice){
+			if(SoundManager.Instance.isSoundOn()) {
+				dieSource.Play();
+			}
 			isDying = true;
 			dieAnimation = true;
-			animator.SetBool("die", true);
+			if(!isFalling){
+				animator.SetBool("die", true);
+			}
 			yield return new WaitForSeconds(1);
-			LevelController.current.onRabitDeath(GetComponent<HeroRabit>());
 			animator.SetBool("die", false);
+			sr.enabled = false;
+			yield return new WaitForSeconds(0.5f);
+			sr.enabled = true;
+			LevelController.current.onRabitDeath(GetComponent<HeroRabit>());
 			dieAnimation = false;
 			isDying = false;
-			Debug.Log("dieAnimation");
+			isFalling = false;
+			
 		} else {
 			this.scale(-1);
 		}
