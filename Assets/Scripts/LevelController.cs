@@ -22,9 +22,13 @@ public class LevelController : MonoBehaviour {
 		current = this;
 		string str = PlayerPrefs.GetString ("stats", null);
 		this.stats = JsonUtility.FromJson<LevelStats> (str);
-		if(this.stats != null) {
+		if(this.stats == null) {
 			this.stats = new LevelStats ();
 		}
+	}
+
+	public LevelStats getStats(){
+		return this.stats;
 	}
 
 }

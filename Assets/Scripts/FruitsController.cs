@@ -10,7 +10,15 @@ public class FruitsController : MonoBehaviour {
 	int fruits;
 	int maxFruits;
 	int count;
-		
+	
+	public int getFruits(){
+		return fruits;
+	}
+
+	public int getMax(){
+		return maxFruits;
+	}
+	
 	void Awake () {
 		controller = this;
 	}
@@ -33,6 +41,10 @@ public class FruitsController : MonoBehaviour {
 	public void add(int fruit){
 		this.fruits+=fruit;	
 		update();
+	}
+	
+	public bool allCollected(){
+		return maxFruits == fruits;
 	}
 
 }

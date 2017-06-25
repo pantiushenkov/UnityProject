@@ -17,11 +17,15 @@ public class CrystalsController : MonoBehaviour {
 	public void Start(){
 		clear();
 	}
-	
+
 	public Sprite crystalBlue;
 	public Sprite crystalGreen;
 	public Sprite crystalRed;
 	public Sprite crystalEmpty; 
+	
+	public List<UI2DSprite> getCrystalsList(){
+		return crystalsList;
+	}
 	
 	public void clear(){
 		coloredCrystals[0] = crystalBlue;

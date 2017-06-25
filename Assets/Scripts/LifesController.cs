@@ -9,7 +9,8 @@ public class LifesController : MonoBehaviour {
 	public Sprite lifeUsed;
 	int lives = 3;
 	public static LifesController controller;
-
+	public GameObject loosePrefab;
+	
 	void Awake(){
 		controller = this;
 	}
@@ -27,9 +28,10 @@ public class LifesController : MonoBehaviour {
 	public void decreaseLives(){
 		lives -= 1;
 		updateLives();
-		if(lives == 0){
-			
-	//		MySceneManager.loadScene("MainMenu");
+		if(lives == 2){
+			GameObject parent = UICamera.first.transform.parent.gameObject;
+			GameObject obj = NGUITools.AddChild (parent, loosePrefab);
+			LoosePopup popup = obj.GetComponent<LoosePopup>();
 		}
 	}
 }

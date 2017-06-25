@@ -15,7 +15,6 @@ public class SettingsPopup : MonoBehaviour {
 	void Start () {
 		isSoundOn = SoundManager.Instance.isSoundOn();
 		isMusicOn = SoundManager.Instance.isMusicOn();
-		
 		UI2DSprite sound = soundButton.GetComponent<UI2DSprite> ();
 		sound.sprite2D = isSoundOn ?  soundOnSprite : soundOffSprite;
 		UI2DSprite music = musicButton.GetComponent<UI2DSprite> ();
@@ -43,7 +42,7 @@ public class SettingsPopup : MonoBehaviour {
 	}
 
 	void toggleMusic(){
-		UI2DSprite sprite = musicButton.GetComponent<UI2DSprite> ();
+			UI2DSprite sprite = musicButton.GetComponent<UI2DSprite> ();
 		sprite.sprite2D = isMusicOn ?  musicOnSprite : musicOffSprite; 
 	}
 	

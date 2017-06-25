@@ -32,4 +32,7 @@ public class CoinsController : MonoBehaviour {
 		else 
 			coinsLabel.text = coins.ToString();
 	}
+	public int getCoins(){
+		return coins;
+	}
 }
