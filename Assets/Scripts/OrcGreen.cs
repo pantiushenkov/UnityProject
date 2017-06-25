@@ -105,8 +105,7 @@ public class OrcGreen : MonoBehaviour {
 		float distanceX = Mathf.Abs(rabit_pos.x - my_pos.x);
 		float distanceY = Mathf.Abs(rabit_pos.y - my_pos.y);
 		float distanceToHit = HeroRabit.lastRabit.isScaled() ? distanceToHitScaleX : distanceToHitX;
-		Debug.Log(SoundManager.Instance.isSoundOn());
-		if(distanceX < distanceToHit + 0.5 && SoundManager.Instance.isSoundOn()) {
+			if(distanceX < distanceToHit + 0.5 && SoundManager.Instance.isSoundOn()) {
 			attackSource.Play();
 			animator.SetTrigger("attack1");
 		}

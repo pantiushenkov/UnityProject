@@ -27,7 +27,9 @@ public class LifesController : MonoBehaviour {
 	public void decreaseLives(){
 		lives -= 1;
 		updateLives();
-		if(lives == 0)
-			MySceneManager.loadScene("MainMenu");
+		if(lives == 0){
+			
+	//		MySceneManager.loadScene("MainMenu");
+		}
 	}
 }

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class LevelController : MonoBehaviour {
 	
-	public AudioClip music;
-	AudioSource musicSource;	
 	public static LevelController current;
 	Vector3 startingPosition;
 	LevelStats stats;
@@ -29,10 +27,4 @@ public class LevelController : MonoBehaviour {
 		}
 	}
 
-	void Start(){
-		musicSource = gameObject.AddComponent<AudioSource>();
-		musicSource.clip = music;
-		musicSource.loop = true;
-		musicSource.Play ();
-	}
 }

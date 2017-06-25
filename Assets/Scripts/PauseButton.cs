@@ -12,7 +12,6 @@ public class PauseButton : MonoBehaviour {
 	}
 
 	void showSettings() {
-		Debug.Log("EKEKEK");
 		GameObject parent = UICamera.first.transform.parent.gameObject;
 		GameObject obj = NGUITools.AddChild (parent, settingsPrefab);
 		SettingsPopup popup = obj.GetComponent<SettingsPopup>();
