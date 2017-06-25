@@ -28,7 +28,7 @@ public class LifesController : MonoBehaviour {
 	public void decreaseLives(){
 		lives -= 1;
 		updateLives();
-		if(lives == 2){
+		if(lives == 0){
 			GameObject parent = UICamera.first.transform.parent.gameObject;
 			GameObject obj = NGUITools.AddChild (parent, loosePrefab);
 			LoosePopup popup = obj.GetComponent<LoosePopup>();
